@@ -1,0 +1,28 @@
+{
+  "name": "intermediate-assignment-nodejs",
+  "version": "1.0.0",
+  "description": "blog assessment",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Vrin0599/Intermediate-Assignment-NodeJS.git"
+  },
+  "author": "VRIN",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Vrin0599/Intermediate-Assignment-NodeJS/issues"
+  },
+  "homepage": "https://github.com/Vrin0599/Intermediate-Assignment-NodeJS#readme",
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "pg": "^8.8.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  }
+}
