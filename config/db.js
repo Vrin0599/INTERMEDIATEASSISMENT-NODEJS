@@ -15,4 +15,4 @@ pool
   .then(() => console.log("DB connected successfully, Go Ahead......."))
   .catch((e) => console.log(e));
 
-module.export = pool;
+module.exports = pool;
