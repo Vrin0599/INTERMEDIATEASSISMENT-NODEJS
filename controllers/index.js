@@ -1,29 +1,14 @@
-const { getBlogs } = require("./blogs");
+const { getBlogs, createBlogs } = require("./blogs");
+const { createUsers } = require("./users");
+const { getComments, publishComments } = require("./comments");
+const { createSubscribers, getSubscribers } = require("./subscribers");
 
 module.exports = {
   getBlogs,
-};
-
-const { createBlogs } = require("./blogs");
-
-module.exports = {
   createBlogs,
-};
-
-const { createUsers } = require("./users");
-
-module.exports = {
   createUsers,
-};
-
-const { getComments } = require("./comments");
-
-module.exports = {
   getComments,
-};
-
-const { publishComments } = require("./comments");
-
-module.exports = {
   publishComments,
+  createSubscribers,
+  getSubscribers,
 };

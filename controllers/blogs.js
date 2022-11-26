@@ -1,34 +1,31 @@
 const db = require("../config/db");
 
-const getBlogs = () => {
-  return new Promise((resolve, reject) => {
+const createBlogs = (data) => {
+  return new Promise(async (resolve, reject) => {
     try {
-      db.query("SELECT * FROM blogs", (error, results) => {
-        if (error) {
-          return reject(error);
-        }
-        resolve(results);
+      if (!data.title || !data.content || !data.userId) {
+        return reject(
+          "Please, check whether you have entered title, content & ID, then proceed."
+        );
+      }
+      const query = {
+        text: "INSERT INTO blogs (title, content, created_by, updated_by) VALUES ($1,$2,$3,$4) RETURNING *",
+        values: [data.title, data.content, data.userId, data.userId],
+      };
+
+      const response = await db.query(query);
+
+      const subscriberEmailQuery = {
+        text: "SELECT us.email FROM subscribers as subs LEFT JOIN users as us on us.id = subs.follower_id WHERE subs.author_id = $1",
+        values: [data.userId],
+      };
+      const responseSubscribers = await db.query(subscriberEmailQuery);
+
+      resolve({
+        insert: response.rows[0],
+        subscribers: responseSubscribers.rows,
       });
     } catch (err) {
-      reject(err);
-    }
-  });
-};
-
-const createBlogs = (data) => {
-  return new Promise((resolve, reject) => {
-    try {
-      db.query(
-        `INSERT INTO blogs (title, content, user_id) VALUES ('${data.title}', '${data.content}', '${data.user_id}')`,
-        (error, results) => {
-          if (error) {
-            return reject(error);
-          }
-          resolve(results);
-        }
-      );
-    } catch (err) {
-      console.log(err);
       reject(err);
     }
   });
@@ -58,12 +55,27 @@ const updateBlogs = (data) => {
         );
       }
 
-      resolve(response);
+      resolve(response.rows[0]);
     } catch (err) {
-      console.log(err);
       reject(err);
     }
   });
 };
 
-module.exports = { getBlogs, createBlogs, updateBlogs };
+const getBlogs = () => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const query = {
+        text: "SELECT bg.title,bg.content,array_agg(cmt.comments) as comments FROM blogs as bg left join comments as cmt on bg.id = cmt.blog_id GROUP BY bg.title,bg.content,comments",
+        values: [],
+      };
+      const response = await db.query(query);
+
+      resolve(response.rows);
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
+
+module.exports = { createBlogs, updateBlogs, getBlogs };
