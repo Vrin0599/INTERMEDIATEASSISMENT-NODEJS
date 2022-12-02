@@ -1,6 +1,6 @@
 const db = require("../config/db");
 
-const getComments = (data) => {
+const getComments = () => {
   return new Promise(async (resolve, reject) => {
     try {
       const query = {
@@ -27,6 +27,7 @@ const publishComments = (data) => {
       const response = await db.query(query);
       resolve(response.rows[0]);
     } catch (err) {
+      console.log(err);
       reject(err);
     }
   });

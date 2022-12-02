@@ -4,7 +4,7 @@ const createUsers = (data) => {
   return new Promise(async (resolve, reject) => {
     try {
       if (!data.fullname || !data.email) {
-        return reject("Please enter fullname  and email then proceed.");
+        return reject("Please enter fullname and email then proceed.");
       }
       const query = {
         text: "INSERT INTO users (fullname, email) VALUES ($1,$2)",

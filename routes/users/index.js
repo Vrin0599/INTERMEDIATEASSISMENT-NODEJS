@@ -8,7 +8,7 @@ router.post("/create", async (req, res, next) => {
     const response = await controllers.createUsers(req.body);
     if (response.rowCount === 1) {
       res.status(200).send({
-        message: "Rows updated successfully.",
+        message: "Rows updated successfully, check your DB",
       });
     } else {
       res.status(500).send({

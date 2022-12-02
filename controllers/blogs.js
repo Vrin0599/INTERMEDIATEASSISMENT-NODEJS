@@ -66,16 +66,34 @@ const getBlogs = () => {
   return new Promise(async (resolve, reject) => {
     try {
       const query = {
-        text: "SELECT bg.title,bg.content,array_agg(cmt.comments) as comments FROM blogs as bg left join comments as cmt on bg.id = cmt.blog_id GROUP BY bg.title,bg.content,comments",
+        text: "SELECT bg.title, bg.content, count(cmt.id) as comment_count FROM blogs as bg left join comments as cmt on bg.id = cmt.blog_id GROUP BY bg.title, bg.content",
         values: [],
       };
-      const response = await db.query(query);
 
+      const response = await db.query(query);
       resolve(response.rows);
     } catch (err) {
+      console.log(err);
       reject(err);
     }
   });
 };
 
-module.exports = { createBlogs, updateBlogs, getBlogs };
+const getBlogById = (data) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const query = {
+        text: "SELECT title, content FROM blogs WHERE id = $1",
+        values: [data.blog_id],
+      };
+
+      const response = await db.query(query);
+      resolve(response.rows);
+    } catch (err) {
+      console.log(err);
+      reject(err);
+    }
+  });
+};
+
+module.exports = { createBlogs, updateBlogs, getBlogs, getBlogById };
